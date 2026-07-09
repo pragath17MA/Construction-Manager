@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: construction_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: construction_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: construction_backend
+    environment:
+      - PROJECT_NAME=AI Construction Project Manager
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/construction_db
+      - SECRET_KEY=supersecretjwtkeyforconstructionprojectmanager
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - chromadb
+
+  frontend:
+    build: ./frontend
+    container_name: construction_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: construction_chromadb
+    ports:
+      - "8003:8000"
+    volumes:
+      - chroma_data:/chroma/data
+
+volumes:
+  postgres_data:
+  chroma_data:

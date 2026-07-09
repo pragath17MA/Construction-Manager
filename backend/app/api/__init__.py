@@ -1,0 +1,16 @@
+from app.api.auth import router as auth_router
+from app.api.project import router as project_router
+from app.api.budget import router as budget_router
+from app.api.materials import router as materials_router
+from app.api.workers import router as workers_router
+from app.api.attendance import router as attendance_router
+from app.api.risk import router as risk_router
+from app.api.progress import router as progress_router
+from app.api.documents import router as documents_router
+from app.api.invoice import router as invoice_router
+from app.api.image_analysis import router as image_analysis_router
+from app.api.voice import router as voice_router
+from app.api.chat import router as chat_router
+from app.api.dashboard import router as dashboard_router
+from app.api.reports import router as reports_router
+from app.api.notifications import router as notifications_router

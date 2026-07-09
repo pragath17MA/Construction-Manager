@@ -1,0 +1,74 @@
+name: CI/CD Production Build & Test
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Pytest suite
+        run: |
+          cd backend
+          pytest
+        env:
+          GROQ_API_KEY: "mock_api_key"
+          OPENWEATHER_API_KEY: "mock_weather_key"
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install npm packages
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run Vite production build
+        run: |
+          cd frontend
+          npm run build
+        env:
+          VITE_API_URL: "http://localhost:8000/api"
+
+  docker-build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Verify Backend Docker build
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: false
+
+      - name: Verify Frontend Docker build
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: false

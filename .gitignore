@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+venv/
+.venv/
+env/
+backend/venv/
+backend/.pytest_cache/
+
+# Databases
+*.db
+*.sqlite
+local.db
+test.db
+backend/local.db
+backend/test.db
+
+# Uploads / User files
+uploads/
+backend/uploads/
+
+# Node / JS
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Environment configurations
+.env
+.env.*
+backend/.env
+
+# IDE and System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

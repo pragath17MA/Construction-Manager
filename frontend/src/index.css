@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium styling additions */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a; /* Slate 900 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155; /* Slate 700 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* Slate 600 */
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure inputs remain legible under all themes & autofill states */
+input, select, textarea {
+  background-color: #0f172a !important; /* Slate 900 */
+  color: #f1f5f9 !important; /* Slate 100 */
+}
+
+input:focus, select:focus, textarea:focus {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #0f172a !important; /* matches dark theme bg */
+}
