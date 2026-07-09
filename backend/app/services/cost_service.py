@@ -46,13 +46,29 @@ class CostService:
             )
 
         # 1. Create Budget summary record
+        ai_summary = result_state.get("ai_summary", "")
+        if ai_summary is None:
+            ai_summary = ""
+        elif isinstance(ai_summary, list):
+            ai_summary = "\n".join(str(s) for s in ai_summary)
+        elif isinstance(ai_summary, dict):
+            ai_summary = "\n".join(f"{k}: {v}" for k, v in ai_summary.items())
+
+        ai_recs = result_state.get("ai_recommendations", "")
+        if ai_recs is None:
+            ai_recs = ""
+        elif isinstance(ai_recs, list):
+            ai_recs = "\n".join(f"- {r}" if not str(r).strip().startswith("-") else str(r) for r in ai_recs)
+        elif isinstance(ai_recs, dict):
+            ai_recs = "\n".join(f"- {k}: {v}" for k, v in ai_recs.items())
+
         budget = Budget(
             project_id=req.project_id,
             estimated_cost=Decimal(result_state["estimated_cost"]),
             optimized_cost=Decimal(result_state["optimized_cost"]),
             currency=req.currency,
-            ai_summary=result_state.get("ai_summary", ""),
-            ai_recommendations=result_state.get("ai_recommendations", "")
+            ai_summary=ai_summary,
+            ai_recommendations=ai_recs
         )
         db.add(budget)
         db.commit()

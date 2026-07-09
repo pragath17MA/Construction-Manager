@@ -1,4 +1,4 @@
-import api from './api';
+import api, { getBaseURL } from './api';
 
 export const submitVoiceCommand = async (projectId, commandText = null, audioBlob = null) => {
   const formData = new FormData();
@@ -26,6 +26,6 @@ export const getVoiceHistory = async (projectId) => {
 };
 
 export const getVoiceAudioUrl = (filename) => {
-  const baseURL = import.meta.env.VITE_API_URL || '/api';
+  const baseURL = getBaseURL();
   return `${baseURL}/voice/audio/${filename}`;
 };

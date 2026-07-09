@@ -1,4 +1,4 @@
-import api from './api';
+import api, { getBaseURL } from './api';
 
 export const triggerVisualAudit = async (projectId, siteImageId) => {
   const response = await api.post('/image-analysis/analyze', {
@@ -20,6 +20,6 @@ export const getImageVisualAudit = async (siteImageId) => {
 
 export const getAnnotatedImageUrl = (analysisId) => {
   // Return secure backend download URL that carries standard auth tokens when fetched via state or direct source
-  const baseURL = import.meta.env.VITE_API_URL || '/api';
+  const baseURL = getBaseURL();
   return `${baseURL}/image-analysis/annotated-image/${analysisId}`;
 };

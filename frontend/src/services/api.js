@@ -1,7 +1,17 @@
 import axios from 'axios';
 
+export const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return '/api';
+  }
+  return 'https://construction-manager-3.onrender.com/api';
+};
+
 const api = axios.create({
-  baseURL: 'https://construction-manager-3.onrender.com/',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
